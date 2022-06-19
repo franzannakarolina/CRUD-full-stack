@@ -4,6 +4,7 @@ import React from 'react';
 interface ButtonProps {
     type?: 'button' | 'submit' | 'reset' | undefined;
     onClick?: () => void;
+    loading?: boolean;
     children?: React.ReactNode
 }
 
