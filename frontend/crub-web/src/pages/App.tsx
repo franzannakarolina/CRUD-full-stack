@@ -1,9 +1,19 @@
-import { Box } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import React, { useState } from "react";
 import api from "../api/base";
 import ButtonSubmit from "../components/Button";
 import Input from "../components/Input";
 import DenseTable from "../components/Table";
+
+interface State {
+  valor: string;
+}
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -29,6 +39,8 @@ function App() {
       .post("/show", dataPost)
       .then((response) => {
         setData(response.data);
+        window.location.reload();
+        localStorage.setItem("data", JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);
@@ -46,12 +58,19 @@ function App() {
             }
           />
           <Box m={2}>
-            <Input
-              placeholder="Valor"
-              onChange={(event) =>
-                setDataPost({ ...dataPost, valor: event.target.value })
-              }
-            />
+            <FormControl fullWidth sx={{ m: 1 }}>
+              <InputLabel htmlFor="outlined-adornment-amount"></InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                placeholder="Valor"
+                startAdornment={
+                  <InputAdornment position="start">R$</InputAdornment>
+                }
+                onChange={(event) =>
+                  setDataPost({ ...dataPost, valor: event.target.value })
+                }
+              />
+            </FormControl>
           </Box>
           <Box m={2}>
             <ButtonSubmit type="submit" onClick={addListener} loading={loading}>

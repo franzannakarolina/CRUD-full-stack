@@ -9,6 +9,9 @@ import Paper from "@mui/material/Paper";
 import ButtonSubmit from "../Button";
 import api from "../../api/base";
 
+import CreateIcon from "@mui/icons-material/Create";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 function createData(name: string, valor: number) {
   return { name, valor };
 }
@@ -17,7 +20,6 @@ const rows = [createData("", 0)];
 
 export default function DenseTable() {
   const [data, setData] = React.useState(rows);
-  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     api
@@ -30,16 +32,17 @@ export default function DenseTable() {
       });
   }, []);
 
-  const handleDelete = async (name: string) => {
-    setLoading(true);
-    try {
-      await api.delete(`/delete/${name}`);
-      setData(data.filter((row) => row.name !== name));
-    } catch (error) {
-      console.log(error);
-    }
-    setLoading(false);
-  }
+  const handleDelete = (name: string) => {
+    api
+      .delete(`/${name}`)
+      .then((response) => {
+        setData(response.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -48,6 +51,11 @@ export default function DenseTable() {
           <TableRow>
             <TableCell>Nome</TableCell>
             <TableCell align="right">Valor</TableCell>
+            <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -57,14 +65,18 @@ export default function DenseTable() {
                 {row.name}
               </TableCell>
               <TableCell align="right">{row.valor}</TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+
               <TableCell align="right">
                 <ButtonSubmit onClick={() => console.log("clicou")}>
-                  Editar
+                  <CreateIcon />
                 </ButtonSubmit>
               </TableCell>
               <TableCell align="right">
                 <ButtonSubmit onClick={() => handleDelete(row.name)}>
-                  Excluir
+                  <DeleteIcon />
                 </ButtonSubmit>
               </TableCell>
             </TableRow>
