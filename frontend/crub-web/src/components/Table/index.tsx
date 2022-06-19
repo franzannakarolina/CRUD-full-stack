@@ -20,6 +20,7 @@ const rows = [createData("", 0)];
 
 export default function DenseTable() {
   const [data, setData] = React.useState(rows);
+  const [isEdit, setEdit] = React.useState(false);
 
   React.useEffect(() => {
     api
@@ -31,6 +32,10 @@ export default function DenseTable() {
         console.log(error);
       });
   }, []);
+
+  const handleEdit = (name: string, valor: number) => {
+    setEdit(!isEdit);
+  };
 
   const handleDelete = (name: string) => {
     api
@@ -48,7 +53,7 @@ export default function DenseTable() {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
-          <TableRow>
+          <TableRow key="header">
             <TableCell>Nome</TableCell>
             <TableCell align="right">Valor</TableCell>
             <TableCell align="right"></TableCell>
@@ -68,17 +73,17 @@ export default function DenseTable() {
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
-
-              <TableCell align="right">
-                <ButtonSubmit onClick={() => console.log("clicou")}>
-                  <CreateIcon />
-                </ButtonSubmit>
-              </TableCell>
-              <TableCell align="right">
-                <ButtonSubmit onClick={() => handleDelete(row.name)}>
-                  <DeleteIcon />
-                </ButtonSubmit>
-              </TableCell>
+              {rows.length !== 0 && (
+                <TableCell align="right">
+                  <ButtonSubmit onClick={() => handleEdit(row.name, row.valor)}>
+                    <CreateIcon />
+                  </ButtonSubmit>
+                  {" "}
+                  <ButtonSubmit onClick={() => handleDelete(row.name)}>
+                    <DeleteIcon />
+                  </ButtonSubmit>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
