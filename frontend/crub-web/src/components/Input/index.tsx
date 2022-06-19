@@ -1,9 +1,9 @@
 import { TextField } from '@mui/material';
 
 interface InputProps {
-    label: string;
-    value: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    label?: string;
+    value?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     type?: string;
     placeholder?: string;
 }

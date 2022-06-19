@@ -8,8 +8,8 @@ let numberOfRequests = 0;
 const projects = [];
 
 function checkProjectExists(req, res, next) {
-  const { id } = req.params;
-  const project = projects.find(p => p.id == id);
+  const { name } = req.params;
+  const project = projects.find(p => p.name == name);
 
   if (!project) {
     return res.status(400).json({ error: "Project not found" });
@@ -18,14 +18,14 @@ function checkProjectExists(req, res, next) {
   return next();
 }
 
-function checkTask(req, res, next) {
-  const { title } = req.body;
+function checkList(req, res, next) {
+  const { name } = req.body;
 
-  if (!title) {
+  if (!name) {
     return res.status(400).json({ error: "Task not informed" });
   }
 
-  req.title = title;
+  req.name = name;
 
   return next();
 }
@@ -82,4 +82,4 @@ server.delete("/projects/:name", (req, res) => {
   return res.send();
 });
 
-server.listen(3000);
+server.listen(3001);
