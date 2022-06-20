@@ -13,11 +13,14 @@ const projects = [];
 
 function checkProjectExists(req, res, next) {
   const { name } = req.params;
-  const project = projects.find(p => p.name == name);
+
+  const project = projects.find(p => p.name === name);
 
   if (!project) {
-    return res.status(400).json({ error: "Project not found" });
+    return res.status(400).json({ error: "Name does not exists" });
   }
+
+  req.project = project;
 
   return next();
 }
@@ -64,19 +67,19 @@ server.post("/projects/show", (req, res) => {
   return res.json(project);
 });
 
-server.put("/projects/:name", checkProjectExists, (req, res) => {
+server.put("/projects/index/:name", checkList, checkProjectExists, (req, res) => {
     const { name } = req.params;
     const { valor } = req.body;
 
-    const project = projects.find(p => p.name == name);
+    const projectPut = projects.find(p => p.name == name);
 
-    project.valor = valor;
+    projectPut.valor = valor;
 
-    return res.json(project);
+    return res.json(projectPut);
     
 });
 
-server.delete("/projects/:name", (req, res) => {
+server.delete("/projects/index/:name", (req, res) => {
   const { name } = req.params;
 
   const projectIndex = projects.findIndex(p => p.name == name);
